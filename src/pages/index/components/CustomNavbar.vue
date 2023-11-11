@@ -1,6 +1,10 @@
+
+
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, onMounted } from 'vue';
 import { transformDateToYearMonth } from '@/utils/transformDate';
+
+const nowDate = new Date().getTime();
 
 const currentDate = ref<string>();
 const isShowDatePicker = ref<boolean>(false);
@@ -24,6 +28,10 @@ const onDatePickerConfirm = (value: Record<string, any>) => {
     currentDate.value = selectedDate;
     closeDatePicker();
 };
+
+onMounted(() => {
+    currentDate.value = transformDateToYearMonth(new Date(nowDate));
+});
 </script>
 
 <template>
@@ -32,12 +40,13 @@ const onDatePickerConfirm = (value: Record<string, any>) => {
         <view class="space">
             <uni-icons class="logo" type="pyq" size="30" />
             <uni-search-bar v-model="currentDate" class="search" placeholder="请选择时间" cancelButton="none"
-                @focus="onSearchfocus" />
+                @focus="onSearchfocus">
+                <uni-icons slot="searchIcon" color="#999999" size="18" type="calendar" />
+            </uni-search-bar>
             <view class="place" />
         </view>
-        <vant-datetime-picker class="date-picker" v-show="isShowDatePicker" type="year-month" title="选择年月"
-            :value="new Date().getTime()" :min-date="new Date(2020, 0, 1)" :max-date="new Date(2025, 5, 1)"
-            @confirm="onDatePickerConfirm" @cancel="closeDatePicker" />
+        <vant-datetime-picker class="date-picker" v-show="isShowDatePicker" type="year-month" title="选择年月" :value="nowDate"
+            :min-date="new Date(2020, 0, 1)" :max-date="nowDate" @confirm="onDatePickerConfirm" @cancel="closeDatePicker" />
     </view>
 </template>
 

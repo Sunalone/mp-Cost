@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import CustomNavBar from './components/CustomNavbar.vue';
 import CategoryPanel from './components/CategoryPanel.vue';
-import Table from './components/Table.vue';
+import BarChart from './components/BarChart.vue';
 </script>
 
 <template>
     <CustomNavBar />
-    <Table />
+    <BarChart />
     <CategoryPanel />
 </template>
 
