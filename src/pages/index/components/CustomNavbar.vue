@@ -1,4 +1,16 @@
-
+<template>
+    <view class="navbar" :style="{ paddingTop: safeAreaTop }">
+        <view class="space">
+            <uni-search-bar v-model="currentDate" class="search" placeholder="请选择时间" cancelButton="none"
+                @focus="onSearchfocus">
+                <uni-icons slot="searchIcon" color="#999999" size="18" type="calendar" />
+            </uni-search-bar>
+            <view class="place" />
+        </view>
+        <vant-datetime-picker class="date-picker" v-show="isShowDatePicker" type="year-month" title="选择年月" :value="nowDate"
+            :min-date="new Date(2020, 0, 1)" :max-date="nowDate" @confirm="onDatePickerConfirm" @cancel="closeDatePicker" />
+    </view>
+</template>
 
 <script setup lang="ts">
 import { computed, ref, onMounted } from 'vue';
@@ -34,28 +46,13 @@ onMounted(() => {
 });
 </script>
 
-<template>
-    <view class="navbar" :style="{ paddingTop: safeAreaTop }">
-        <!-- logo文字 -->
-        <view class="space">
-            <uni-icons class="logo" type="pyq" size="30" />
-            <uni-search-bar v-model="currentDate" class="search" placeholder="请选择时间" cancelButton="none"
-                @focus="onSearchfocus">
-                <uni-icons slot="searchIcon" color="#999999" size="18" type="calendar" />
-            </uni-search-bar>
-            <view class="place" />
-        </view>
-        <vant-datetime-picker class="date-picker" v-show="isShowDatePicker" type="year-month" title="选择年月" :value="nowDate"
-            :min-date="new Date(2020, 0, 1)" :max-date="nowDate" @confirm="onDatePickerConfirm" @cancel="closeDatePicker" />
-    </view>
-</template>
-
 <style lang="scss">
 /* 自定义导航条 */
 .navbar {
     position: relative;
     padding-top: 20px;
     padding-bottom: 12px;
+    background-color: #fff;
 
     .space {
         display: flex;
@@ -63,14 +60,6 @@ onMounted(() => {
         align-items: center;
         height: 64rpx;
         gap: 30rpx;
-
-        .logo {
-            width: 36rpx;
-
-            text {
-                color: $uni-color-primary !important;
-            }
-        }
 
         .search {
             flex: 1;
