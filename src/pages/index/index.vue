@@ -1,16 +1,23 @@
-<script setup lang="ts">
-import CustomNavBar from './components/CustomNavbar.vue';
-import CircleChart from './components/CircleChart.vue';
-</script>
 
 <template>
     <view class="space">
-        <CustomNavBar />
+        <CustomNavBar @emitDateTime="onDateTime" />
         <view class="content">
-            <CircleChart />
+            <CircleChart :month="currentMonth" />
         </view>
     </view>
 </template>
+<script setup lang="ts">
+import { ref } from 'vue';
+import CustomNavBar from './components/CustomNavbar.vue';
+import CircleChart from './components/CircleChart.vue';
+
+const currentMonth = ref<number>(0);
+
+const onDateTime = (month: number) => {
+    currentMonth.value = month;
+};
+</script>
 
 <style scoped lang="scss">
 .space {

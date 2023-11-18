@@ -6,7 +6,7 @@
         </view>
         <scroll-view class="list" scroll-y>
             <view class="subTitle">支出详细</view>
-            <view class="list-item" v-for="item in seriesData" :key="item.name">
+            <view class="list-item" v-for="item in chartData.series" :key="item.name">
                 <view class="tag" :style="{ backgroundColor: item.color }" />
                 <view class="detail">
                     <view class="detail-text">
@@ -24,7 +24,7 @@
     </view>
 </template>
 <script lang="ts">
-import { expendData } from "@/utils/mockData";
+import { expendDataMore, expendDataLess } from "@/utils/mockData";
 const colors = [
     "#1890ff",
     "#91cb74",
@@ -33,27 +33,33 @@ const colors = [
     "#73c0de",
     "#3ca272"
 ];
-
-</script>
-
-<script setup lang='ts'>
-import Progress from './Progress.vue';
-
-const seriesData = expendData.map(({ name, expense, proportion }, index) => ({
-    name,
-    data: expense,
-    color: colors[index],
-    proportion
-}));
-
-const chartData = {
-    series: seriesData
-};
-
 const options = {
     title: false,
     subtitle: false
 };
+</script>
+
+<script setup lang='ts'>
+import { computed } from 'vue';
+import Progress from './Progress.vue';
+
+const props = defineProps<{
+    month: number;
+}>();
+
+const chartData = computed(() => {
+    const expandData = props.month % 2 === 0 ? expendDataMore : expendDataLess;
+    const seriesData = expandData.map(({ name, expense, proportion }, index) => ({
+        name,
+        data: expense,
+        color: colors[index],
+        proportion
+    }));
+
+    return {
+        series: seriesData
+    };
+})
 
 </script>
 <style scoped lang='scss'>
@@ -84,15 +90,29 @@ const options = {
         height: 280px;
 
         .subTitle {
+            position: relative;
+            padding-left: 10px;
             margin-bottom: 12px;
             font-size: 28rpx;
             font-weight: 600;
+
+            &::after {
+                content: "";
+                position: absolute;
+                top: 50%;
+                left: 0;
+                transform: translateY(-50%);
+                width: 4px;
+                height: 14px;
+                background-color: #1890ff;
+                border-radius: 2px;
+            }
         }
 
         .list-item {
             display: flex;
             padding: 6px;
-            margin: 6px 0;
+            margin: 10px 0;
             width: 100%;
             height: 36px;
             gap: 6px;

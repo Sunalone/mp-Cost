@@ -16,16 +16,11 @@
 import { computed, ref, onMounted } from 'vue';
 import { transformDateToYearMonth } from '@/utils/transformDate';
 
-const nowDate = new Date().getTime();
-
 const currentDate = ref<string>();
 const isShowDatePicker = ref<boolean>(false);
-
-const { safeAreaInsets } = uni.getSystemInfoSync();
-const safeAreaTop = computed(() => {
-    const top: number = safeAreaInsets?.top ?? 0 + 12;
-    return top + 'px';
-});
+const nowDate = new Date();
+const { safeAreaInsets } = uni.getSystemInfoSync(); // 获取设备的安全区域
+const emit = defineEmits(["emitDateTime"]);
 
 const onSearchfocus = () => {
     isShowDatePicker.value = true;
@@ -35,14 +30,25 @@ const closeDatePicker = () => {
     isShowDatePicker.value = false;
 };
 
+
 const onDatePickerConfirm = (value: Record<string, any>) => {
-    const selectedDate = transformDateToYearMonth(new Date(value.detail));
+    const dateTime = new Date(value.detail);
+    const month = dateTime.getMonth() + 1;
+    const selectedDate = transformDateToYearMonth(dateTime);  // 转换时间格式
     currentDate.value = selectedDate;
+    emit("emitDateTime", month);
     closeDatePicker();
 };
 
+const safeAreaTop = computed(() => {
+    const top: number = safeAreaInsets?.top ?? 0 + 12; // 计算Nav的paddingTop的安全距离
+    return top + 'px';
+});
+
 onMounted(() => {
-    currentDate.value = transformDateToYearMonth(new Date(nowDate));
+    currentDate.value = transformDateToYearMonth(nowDate);
+    const month = nowDate.getMonth() + 1;
+    emit("emitDateTime", month);
 });
 </script>
 
@@ -75,6 +81,7 @@ onMounted(() => {
         position: fixed;
         left: 0;
         bottom: 0;
+        z-index: 9999;
     }
 }
 </style>
