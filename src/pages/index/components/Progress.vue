@@ -1,7 +1,7 @@
 <template>
     <view class="progress--line">
         <view class="progress-bar">
-            <view class="progress-bar__outer" :style="{ height: strokeHeight + 'px' }">
+            <view class="progress-bar__outer" :style="progressHeight">
                 <view class="progress-bar__inner" :style="barStyle" />
             </view>
         </view>
@@ -12,16 +12,21 @@
 import { computed } from "vue";
 
 const props = defineProps<{
-    strokeHeight: number;
+    strokeHeight?: number;
     percentage: number;
+    color: string;
 }>();
 
-const barStyle = computed(() => {
-    const barColor = props.percentage < 60 ? "#ff4949" : '#13ce66';
+const progressHeight = computed(() => {
+    return {
+        height: props.strokeHeight ? props.strokeHeight : 4 + 'px'
+    };
+});
 
+const barStyle = computed(() => {
     return {
         width: props.percentage + "%",
-        backgroundColor: barColor
+        backgroundColor: props.color
     };
 });
 
@@ -33,10 +38,8 @@ const barStyle = computed(() => {
 
 .progress-bar {
     display: inline-block;
-    width: 98%;
+    width: 100%;
     box-sizing: border-box;
-    margin-right: -50px;
-    padding-right: 50px;
 }
 
 .progress-bar__inner {
@@ -51,6 +54,6 @@ const barStyle = computed(() => {
 .progress-bar__outer {
     width: 100%;
     border-radius: 10px;
-    background-color: #ebeef5;
+    background-color: #d5d9e0;
 }
 </style>

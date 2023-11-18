@@ -6,44 +6,25 @@
         </view>
         <scroll-view class="list" scroll-y>
             <view class="subTitle">支出详细</view>
-            <view class="list-item">
-                <view class="tag" />
+            <view class="list-item" v-for="item in seriesData" :key="item.name">
+                <view class="tag" :style="{ backgroundColor: item.color }" />
                 <view class="detail">
                     <view class="detail-text">
                         <view class="text">
-                            学习 <text class="percent">25.67%</text>
+                            {{ item.name }} <text class="percent">{{ item.proportion + "%" }}</text>
                         </view>
                         <view class="number">
-                            666.00
+                            {{ item.data + "(元)" }}
                         </view>
                     </view>
-                    <Progress class="progress" :stroke-height="4" :percentage="80" />
+                    <Progress class="progress" :percentage="item.proportion" :color="item.color" />
                 </view>
             </view>
         </scroll-view>
     </view>
 </template>
-
-<script setup lang='ts'>
-import Progress from './Progress.vue';
-
-const chartData = {
-    series: [
-        { name: "其他", data: 50 },
-        { name: "医疗", data: 30 },
-        { name: "三餐", data: 20 },
-        { name: "交通", data: 18 },
-        { name: "购物", data: 68 },
-        { name: "话费网费", data: 60 },
-    ]
-
-};
-
-const options = {
-    title: false,
-    subtitle: false
-};
-
+<script lang="ts">
+import { expendData } from "@/utils/mockData";
 const colors = [
     "#1890ff",
     "#91cb74",
@@ -52,6 +33,27 @@ const colors = [
     "#73c0de",
     "#3ca272"
 ];
+
+</script>
+
+<script setup lang='ts'>
+import Progress from './Progress.vue';
+
+const seriesData = expendData.map(({ name, expense, proportion }, index) => ({
+    name,
+    data: expense,
+    color: colors[index],
+    proportion
+}));
+
+const chartData = {
+    series: seriesData
+};
+
+const options = {
+    title: false,
+    subtitle: false
+};
 
 </script>
 <style scoped lang='scss'>
@@ -90,6 +92,7 @@ const colors = [
         .list-item {
             display: flex;
             padding: 6px;
+            margin: 6px 0;
             width: 100%;
             height: 36px;
             gap: 6px;
