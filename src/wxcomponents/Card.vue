@@ -1,13 +1,13 @@
 <template>
     <view class="card-space">
         <view class="title-space">
-            <view class="title">
+            <view class="title" :style="(typeof title === 'number' ? { fontSize: '24px' } : {})">
                 {{ title }} <text class="subTitle">
                     {{ subTitle }}
                 </text>
             </view>
-            <view :style="highLightColor">
-                {{ highLightText ? highLightText + "%" : null }}
+            <view class="high-light-text" :style="highLightColor">
+                {{ highLightText ? highLightText > 0 ? "+" + highLightText + "%" : "-" + highLightText + "%" : null }}
             </view>
         </view>
         <slot />
@@ -18,7 +18,7 @@
 import { computed } from 'vue';
 
 const props = defineProps<{
-    title: string;
+    title: string | number;
     subTitle?: string;
     highLightText?: number;
 }>();
@@ -38,21 +38,28 @@ const highLightColor = computed(() => {
     padding: 12px;
     background-color: #fff;
     border-radius: 8px;
+    margin-bottom: 12px;
+    min-height: 165px;
 
     .title-space {
         display: flex;
         justify-content: space-between;
         margin-bottom: 12px;
-        font-size: 12px;
         font-weight: 600;
         font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 
         .title {
-            font-size: 14px;
-
             .subTitle {
+                font-size: 12px;
                 color: #aaa;
             }
+        }
+
+        .high-light-text {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            letter-spacing: 1px
         }
 
     }

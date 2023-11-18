@@ -42,7 +42,8 @@
         "navigationBarBackgroundColor": "#F8F8F8",
         "backgroundColor": "#F8F8F8",
         "usingComponents": {
-            "vant-datetime-picker": "/wxcomponents/vant/datetime-picker/index"
+            "vant-datetime-picker": "/wxcomponents/vant/datetime-picker/index",
+            "vant-circle": "/wxcomponents/vant/circle/index"
         }
     },
     // 设置 TabBar

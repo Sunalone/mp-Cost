@@ -4,7 +4,7 @@
         <view class="chart">
             <qiun-data-charts type="ring" :chartData="chartData" :opts="options" />
         </view>
-        <scroll-view class="list" scroll-y>
+        <scroll-view class="list" scroll-y @scrolltolower="onScrollToLower">
             <view class="subTitle">支出详细</view>
             <view class="list-item" v-for="item in chartData.series" :key="item.name">
                 <view class="tag" :style="{ backgroundColor: item.color }" />
@@ -46,6 +46,13 @@ import Progress from './Progress.vue';
 const props = defineProps<{
     month: number;
 }>();
+
+const onScrollToLower = () => {
+    uni.showToast({
+        title: "没有更多数据了",
+        icon: "fail"
+    });
+};
 
 const chartData = computed(() => {
     const expandData = props.month % 2 === 0 ? expendDataMore : expendDataLess;
