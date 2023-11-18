@@ -1,25 +1,14 @@
 <template>
   <div class="space">
-    <Card>
-      cascdscscd
-      <view>
-        cascdscscd
-      </view>
-      <view>
-        cascdscscd
-      </view>
-      <view>
-        cascdscscd
-      </view>
-      <view>
-        cascdscscd
-      </view>
+    <Card title="七日汇总" :high-light-text="100">
+      <WeekDetail />
     </Card>
   </div>
 </template>
 
 <script setup lang="ts">
 import Card from '@/wxcomponents/Card.vue';
+import WeekDetail from './components/WeekDeatil.vue';
 </script>
 
 <style scoped lang="scss">
