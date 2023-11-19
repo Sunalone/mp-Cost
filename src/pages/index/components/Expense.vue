@@ -5,7 +5,7 @@
         </view>
         <view class="content">
             <view class="expense">
-                1000.00
+                113.54
             </view>
             <view class="text">
                 今日支出

@@ -1,26 +1,26 @@
-const baseUrl = 'http://localhost:8090'
+const baseUrl = 'http://localhost:8090';
 
 const httpInterceptor = {
     invoke(options: UniApp.RequestOptions) {
         if (!options.url.startsWith('http')) {
-            options.url = baseUrl + options.url
+            options.url = baseUrl + options.url;
         }
-        options.timeout = 10000
+        options.timeout = 10000;
         options.header = {
             ...options.header,
             'source-client': 'miniapp',
-        }
+        };
 
-        const token = '123456'
+        const token = '123456';
 
         if (token) {
-            options.header.Authorization = token
+            options.header.Authorization = token;
         }
     },
-}
+};
 
-uni.addInterceptor('request', httpInterceptor)
-uni.addInterceptor('uploadFile', httpInterceptor)
+uni.addInterceptor('request', httpInterceptor);
+uni.addInterceptor('uploadFile', httpInterceptor);
 
 /**
  * 请求函数
@@ -36,10 +36,10 @@ uni.addInterceptor('uploadFile', httpInterceptor)
  *    3.3 网络错误 -> 提示用户换网络
  */
 type Data<T> = {
-    code: string
-    msg: string
-    result: T
-}
+    code: string;
+    msg: string;
+    result: T;
+};
 // 2.2 添加类型，支持泛型
 export const http = <T>(options: UniApp.RequestOptions) => {
     // 1. 返回 Promise 对象
@@ -51,17 +51,17 @@ export const http = <T>(options: UniApp.RequestOptions) => {
                 // 状态码 2xx， axios 就是这样设计的
                 if (res.statusCode >= 200 && res.statusCode < 300) {
                     // 2.1 提取核心数据 res.data
-                    resolve(res.data as Data<T>)
+                    resolve(res.data as Data<T>);
                 } else if (res.statusCode === 401) {
-                    uni.navigateTo({ url: '/pages/login/login' })
-                    reject(res)
+                    uni.navigateTo({ url: '/pages/login/login' });
+                    reject(res);
                 } else {
                     // 其他错误 -> 根据后端错误信息轻提示
                     uni.showToast({
                         icon: 'none',
                         title: (res.data as Data<T>).msg || '请求错误',
-                    })
-                    reject(res)
+                    });
+                    reject(res);
                 }
             },
             // 响应失败
@@ -69,9 +69,9 @@ export const http = <T>(options: UniApp.RequestOptions) => {
                 uni.showToast({
                     icon: 'none',
                     title: '网络错误，换个网络试试',
-                })
-                reject(err)
+                });
+                reject(err);
             },
-        })
-    })
-}
+        });
+    });
+};
